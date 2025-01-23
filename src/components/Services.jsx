@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     marginBottom: 8, // Add margin to separate rating from the description
   },
   font:{
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins-Bold',
   }
 });
 
