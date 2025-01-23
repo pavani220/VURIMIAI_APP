@@ -12,22 +12,22 @@ const Reviews = () => {
     {
       id: "1",
       image: require('../assets/images/avatar.jpg'),
-      name: "John Doe",
+      name: "John ",
       experience: "Great experience! The service was fantastic.",
       rating: 4,
     },
     {
       id: "2",
       image: require('../assets/images/avatar.jpg'),
-      name: "Jane Smith",
+      name: "Smith",
       experience: "Excellent support and quick response time!",
       rating: 5,
     },
     {
       id: "3",
       image: require('../assets/images/avatar.jpg'),
-      name: "Sam Wilson",
-      experience: "Very professional and attentive to detail.",
+      name: "Sam ",
+      experience: "Good service.",
       rating: 4,
     },
   ];

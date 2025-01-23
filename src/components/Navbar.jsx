@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'; // Import from react-native-vector-icons
+import Icon from 'react-native-vector-icons/AntDesign'; // Import from react-native-vector-icons
 
 const Navbar = () => {
   return (
@@ -12,10 +12,10 @@ const Navbar = () => {
         <Icon name="user" size={27} color="black" />
       </TouchableOpacity>
       <TouchableOpacity style={styles.navbarItem}>
-        <Icon name="plus" size={27} color="black" />
+        <Icon name="customerservice" size={27} color="black" />
       </TouchableOpacity>
       <TouchableOpacity style={styles.navbarItem}>
-        <Icon name="shopping-cart" size={27} color="black" />
+        <Icon name="shoppingcart" size={27} color="black" />
       </TouchableOpacity>
     </View>
   );

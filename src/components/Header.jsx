@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FlatList, StyleSheet, Text, View, Image, Dimensions, TouchableOpacity } from "react-native";
+import { FlatList, StyleSheet, Text, View, Image, Dimensions, TouchableOpacity, Modal } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MenuIcon from 'react-native-vector-icons/Entypo';
 
@@ -7,6 +7,7 @@ const { width, height } = Dimensions.get("window");
 
 const Header = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [menuVisible, setMenuVisible] = useState(false); // State for menu visibility
   const flatListRef = useRef(null);
 
   const HomeScreenData = [
@@ -60,12 +61,16 @@ const Header = () => {
 
   return (
     <View style={styles.container}>
+      {/* Header Section */}
       <View style={styles.headerContainer}>
-        <MenuIcon name="menu" size={30} color="black" style={styles.icon} />
+        <TouchableOpacity onPress={() => setMenuVisible(true)}>
+          <MenuIcon name="menu" size={30} color="black" style={styles.icon} />
+        </TouchableOpacity>
         <Text style={styles.headerText}>Vurimi AI</Text>
         <Icon name="bell" size={30} color="black" style={styles.icon} />
       </View>
 
+      {/* Slider Section */}
       <View style={styles.sliderContainer}>
         <FlatList
           ref={flatListRef}
@@ -79,14 +84,39 @@ const Header = () => {
           extraData={activeIndex}
           initialScrollIndex={activeIndex}
         />
-
         {renderLines()}
       </View>
+
+      {/* Menu Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={menuVisible}
+        onRequestClose={() => setMenuVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.menuContainer}>
+            <TouchableOpacity style={styles.menuItem} onPress={() => alert("Cart selected")}>
+              <Text style={styles.menuText}>Cart</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={() => alert("About Us selected")}>
+              <Text style={styles.menuText}>About Us</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem} onPress={() => alert("My Profile selected")}>
+              <Text style={styles.menuText}>My Profile</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.closeMenu} onPress={() => setMenuVisible(false)}>
+              <Text style={styles.closeText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
 
 export default Header;
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
@@ -99,25 +129,25 @@ const styles = StyleSheet.create({
     width: width * 1,
     paddingHorizontal: 15,
     marginTop: 5,
-    paddingBottom: 5, // Decreased padding-bottom to reduce height
+    paddingBottom: 5,
   },
   headerText: {
-    fontSize: 22,  // Reduced font size for a more compact header
+    fontSize: 22,
     fontFamily: "Poppins-Bold",
     color: "green",
   },
   icon: {
-    padding: 8, // Reduced icon padding to make it smaller
+    padding: 8,
   },
   sliderContainer: {
     width: width,
-    height: height * 0.3,  // Reduced the height of the slider container
+    height: height * 0.3,
     justifyContent: 'center',
     alignItems: 'center',
   },
   slider: {
     width: width,
-    height: height * 0.25, // Reduced height for a more compact slider
+    height: height * 0.25,
   },
   itemContainer: {
     justifyContent: "flex-start",
@@ -141,7 +171,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
     width: '100%',
     position: 'absolute',
-    bottom: 30, // Adjusted bottom position to fit the new header height
+    bottom: 30,
   },
   line: {
     width: 24,
@@ -152,5 +182,35 @@ const styles = StyleSheet.create({
   },
   activeLine: {
     backgroundColor: "black",
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  menuContainer: {
+    width: width * 0.8,
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    padding: 20,
+    alignItems: "center",
+  },
+  menuItem: {
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
+    width: "100%",
+  },
+  menuText: {
+    fontSize: 18,
+    textAlign: "center",
+  },
+  closeMenu: {
+    marginTop: 10,
+  },
+  closeText: {
+    fontSize: 16,
+    color: "red",
   },
 });

@@ -15,7 +15,7 @@ const Services = () => {
     },
     {
       id: 2,
-      name: "Pesticides Spray",
+      name: "Soil Testing",
       price: "₹800",
       image: require('../assets/images/agri_img1.jpg'),
     },
