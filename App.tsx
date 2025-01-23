@@ -7,6 +7,8 @@ import Navbar from './src/components/Navbar';
 import Reviews from './src/components/Reviews';
 import SignUpScreen from './src/screens/SignUpScreen'; 
 import Login from './src/screens/Login';
+import Bot from './src/screens/Bot';
+
 function App(): React.JSX.Element {
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
 
@@ -20,7 +22,7 @@ function App(): React.JSX.Element {
   if (showWelcomeScreen) {
     return (
       <SafeAreaView style={styles.appContainer}>
-        <Login />
+        <Bot/>
       </SafeAreaView>
     );
   }

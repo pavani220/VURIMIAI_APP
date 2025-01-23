@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FlatList, StyleSheet, Text, View, Image, Dimensions, TouchableOpacity, Modal } from "react-native";
+import { FlatList, StyleSheet, Text, View, Image, Dimensions, TouchableOpacity } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MenuIcon from 'react-native-vector-icons/Entypo';
 
@@ -7,7 +7,7 @@ const { width, height } = Dimensions.get("window");
 
 const Header = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [menuVisible, setMenuVisible] = useState(false); // State for menu visibility
+  const [menuVisible, setMenuVisible] = useState(false); // State to manage menu visibility
   const flatListRef = useRef(null);
 
   const HomeScreenData = [
@@ -59,18 +59,35 @@ const Header = () => {
     );
   };
 
+  const toggleMenu = () => {
+    setMenuVisible(!menuVisible);
+  };
+
+  const Menu = () => (
+    <View style={styles.menuContainer}>
+      <TouchableOpacity style={styles.menuItem} onPress={() => alert('About Us')}>
+        <Text style={styles.menuText}>About Us</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.menuItem} onPress={() => alert('My Profile')}>
+        <Text style={styles.menuText}>My Profile</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.menuItem} onPress={() => alert('Contact Us')}>
+        <Text style={styles.menuText}>Contact Us</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
-      {/* Header Section */}
       <View style={styles.headerContainer}>
-        <TouchableOpacity onPress={() => setMenuVisible(true)}>
+        <TouchableOpacity onPress={toggleMenu}>
           <MenuIcon name="menu" size={30} color="black" style={styles.icon} />
         </TouchableOpacity>
-        <Text style={styles.headerText}>Vurimi AI</Text>
-        <Icon name="bell" size={30} color="black" style={styles.icon} />
+        <Text style={styles.headerText}>Vurimi AI Global Services</Text>
       </View>
 
-      {/* Slider Section */}
+      {menuVisible && <Menu />} {/* Render the menu if visible */}
+
       <View style={styles.sliderContainer}>
         <FlatList
           ref={flatListRef}
@@ -84,33 +101,9 @@ const Header = () => {
           extraData={activeIndex}
           initialScrollIndex={activeIndex}
         />
+
         {renderLines()}
       </View>
-
-      {/* Menu Modal */}
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={menuVisible}
-        onRequestClose={() => setMenuVisible(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.menuContainer}>
-            <TouchableOpacity style={styles.menuItem} onPress={() => alert("Cart selected")}>
-              <Text style={styles.menuText}>Cart</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => alert("About Us selected")}>
-              <Text style={styles.menuText}>About Us</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem} onPress={() => alert("My Profile selected")}>
-              <Text style={styles.menuText}>My Profile</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.closeMenu} onPress={() => setMenuVisible(false)}>
-              <Text style={styles.closeText}>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
     </View>
   );
 };
@@ -183,34 +176,20 @@ const styles = StyleSheet.create({
   activeLine: {
     backgroundColor: "black",
   },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    justifyContent: "center",
-    alignItems: "center",
-  },
   menuContainer: {
-    width: width * 0.8,
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    padding: 20,
-    alignItems: "center",
+    position: 'absolute',
+    top: 60, // Adjust based on your header height
+    left: 15,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    elevation: 5,
+    zIndex: 1000,
   },
   menuItem: {
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
-    width: "100%",
+    padding: 10,
   },
   menuText: {
-    fontSize: 18,
-    textAlign: "center",
-  },
-  closeMenu: {
-    marginTop: 10,
-  },
-  closeText: {
     fontSize: 16,
-    color: "red",
+    color: 'black',
   },
 });

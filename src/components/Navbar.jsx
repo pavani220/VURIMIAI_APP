@@ -14,9 +14,7 @@ const Navbar = () => {
       <TouchableOpacity style={styles.navbarItem}>
         <Icon name="customerservice" size={27} color="black" />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.navbarItem}>
-        <Icon name="shoppingcart" size={27} color="black" />
-      </TouchableOpacity>
+      
     </View>
   );
 };
