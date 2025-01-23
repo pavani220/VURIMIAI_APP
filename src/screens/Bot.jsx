@@ -1,57 +1,69 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, FlatList, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons'; // Make sure to install react-native-vector-icons
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; // Make sure to install react-native-vector-icons
+
+const responses = {
+  hi: 'Hello, Welcome to VurimiAi Global Services, how can I help you today?',
+  issue: 'Sorry for the inconvenience, please call the customer care number.',
+  problem: 'Sorry for the inconvenience, please call the customer care number.',
+  complaint: 'Sorry for the inconvenience, please call the customer care number.',
+  help: 'Sorry for the inconvenience, please call the customer care number.',
+  location: 'VurimiAi Main Branch is located in Nellore, Andhra Pradesh, India.',
+  address: 'VurimiAi Main Branch is located in Nellore, Andhra Pradesh, India.',
+  situated: 'VurimiAi Main Branch is located in Nellore, Andhra Pradesh, India.',
+  less: 'We cant provide service for less than 5 hectare land for far locations. For support please contact customer care.',
+  drone: 'Our drones are equipped for efficient spraying. What would you like to know?',
+  spraying: 'We offer various spraying services, including pesticides and fertilizers. Can I help you with something specific?',
+  cost: 'The cost of our drone spraying services varies based on the area and type of service. Please provide more details for a quote.',
+  default: 'I am sorry, I do not understand your question. Can you please rephrase?'
+};
 
 const Bot = () => {
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([]);
 
+  const generateUniqueId = () => `${Date.now().toString()}-${Math.random().toString(36).substr(2, 9)}`;
+
   const handleSend = () => {
     if (input.trim()) {
-      const userMessage = { id: Date.now().toString(), text: input, sender: 'user' };
+      const userMessage = { id: generateUniqueId(), text: input, sender: 'user' };
       setMessages((prevMessages) => [...prevMessages, userMessage]);
       setInput('');
-      respondToUser (input);
+      respondToUser(input);
     }
   };
 
-  const respondToUser  = (userInput) => {
-    let botResponse = '';
+  const respondToUser = (userInput) => {
+    const lowerInput = userInput.toLowerCase();
+    let botResponse = responses.default;
 
-    // Simple keyword-based responses
-    if (userInput.toLowerCase().includes('hi'))  {
-      botResponse = 'Hello, Welcome to VurimiAi Global Services,how can I help you today?';
-    }
-    else if (userInput.toLowerCase().includes('issue')|| userInput.toLowerCase().includes('problem')|| userInput.toLowerCase().includes('complaint') || userInput.toLowerCase().includes('help')) {
-        botResponse='Sorry for the inconvinience, please call to the customer care number';
-    }
-    else if (userInput.toLowerCase().includes('Location of vurimi')|| userInput.toLowerCase().includes('Where VurimiAi located')|| userInput.toLowerCase().includes('Address of Vurimi') || userInput.toLowerCase().includes('VurimiAi situated in')) {
-        botResponse='VurimiAi is Main Branch is located in Nellore ,AndhraPradesh, India';
-    }
-    else if (userInput.toLowerCase().includes('less than 5 acre')|| userInput.toLowerCase().includes('No location found')|| userInput.toLowerCase().includes('Less land')) {
-
-        botResponse='We cant able to provide service for less than 5 hectare land For Far locations.For support please contact customer care';
-    }
-    else if (userInput.toLowerCase().includes('drone')) {
-      botResponse = 'Our drones are equipped for efficient spraying. What would you like to know?';
-    } else if (userInput.toLowerCase().includes('spraying')) {
-      botResponse = 'We offer various spraying services, including pesticides and fertilizers. Can I help you with something specific?';
-    } else if (userInput.toLowerCase().includes('cost')) {
-      botResponse = 'The cost of our drone spraying services varies based on the area and type of service. Please provide more details for a quote.';
-    } else {
-      botResponse = 'I am sorry, I do not understand your question. Can you please rephrase?';
+    for (const key in responses) {
+      if (lowerInput.includes(key)) {
+        botResponse = responses[key];
+        break;
+      }
     }
 
-    const botMessage = { id: Date.now().toString(), text: botResponse, sender: 'bot' };
+    const botMessage = { id: generateUniqueId(), text: botResponse, sender: 'bot' };
     setMessages((prevMessages) => [...prevMessages, botMessage]);
   };
 
   return (
     <View style={styles.container}>
+      <Image source={require('../assets/images/vurimi_ai.png')} style={styles.backgroundImage} />
       <FlatList
         data={messages}
         renderItem={({ item }) => (
-          <View style={item.sender === 'user' ? styles.userMessage : styles.botMessage}>
-            <Text style={styles.messageText}>{item.text}</Text>
+          <View style={item.sender === 'user' ? styles.userMessage : styles.botMessageContainer}>
+            {item.sender === 'bot' && (
+              <View style={styles.botIconContainer}>
+                <MaterialCommunityIcons name="robot-outline" size={24} color="#000" style={styles.botIcon} />
+              </View>
+            )}
+            <View style={item.sender === 'user' ? styles.userMessage : styles.botMessage}>
+              <Text style={styles.messageText}>{item.text}</Text>
+            </View>
           </View>
         )}
         keyExtractor={(item) => item.id}
@@ -64,17 +76,30 @@ const Bot = () => {
           onChangeText={setInput}
           placeholder="Type your message..."
         />
-        <Button title="Send" onPress={handleSend} />
+        <TouchableOpacity onPress={handleSend} style={styles.sendButton}>
+          <Ionicons name="send" size={24} color="white" />
+        </TouchableOpacity>
       </View>
     </View>
   );
 };
+
 export default Bot;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
     backgroundColor: '#fff',
+    borderRadius: 10, // Added border radius
+  },
+  backgroundImage: {
+    position: 'absolute',
+    width: 380, // Slightly increased width
+    height: 300, // Slightly increased height
+    opacity: 0.5, // Slightly increased opacity
+    alignSelf: 'center',
+    top: '30%',
   },
   messageList: {
     flex: 1,
@@ -83,18 +108,38 @@ const styles = StyleSheet.create({
   userMessage: {
     alignSelf: 'flex-end',
     backgroundColor: '#d1e7dd',
-    borderRadius: 10,
-    padding: 10,
+    borderRadius: 20, // Increased border radius
+    paddingHorizontal:10,
+    paddingVertical:2,
     marginVertical: 5,
     maxWidth: '80%',
+    fontFamily:'Poppins-Regular',
+
+  },
+  botMessageContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 5,
+  },
+  botIconContainer: {
+    marginRight: 10,
+    borderRadius: 12,
+    backgroundColor: '#f8d7da',
+    padding: 5,
+  },
+  botIcon: {
+    borderRadius: 12,
   },
   botMessage: {
     alignSelf: 'flex-start',
     backgroundColor: '#f8d7da',
-    borderRadius: 10,
-    padding: 10,
-    marginVertical: 5,
+    borderRadius: 28, // Increased border radius
     maxWidth: '80%',
+    paddingVertical:7,
+    paddingHorizontal:20,
+    fontFamily:'Poppins-Regular',
+
+
   },
   messageText: {
     fontSize: 16,
@@ -102,13 +147,21 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    borderRadius: 10, // Added border radius
+    borderColor: '#ccc',
+    padding: 5,
   },
   input: {
     flex: 1,
     borderColor: '#ccc',
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 20, // Added border radius
     padding: 10,
     marginRight: 10,
+  },
+  sendButton: {
+    backgroundColor: '#007bff',
+    borderRadius: 10,
+    padding: 10,
   },
 });
