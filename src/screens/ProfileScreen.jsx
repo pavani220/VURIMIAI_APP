@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   email: {
-    fontSize: 16,
+    fontSize: 17,
     color: '#fff',
     marginTop: 5,
   },
