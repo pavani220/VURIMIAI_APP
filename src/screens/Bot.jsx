@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet, Image } 
 import Ionicons from 'react-native-vector-icons/Ionicons'; // Make sure to install react-native-vector-icons
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'; // Make sure to install react-native-vector-icons
 
+
 const responses = {
   hi: 'Hello, Welcome to VurimiAi Global Services, how can I help you today?',
   issue: 'Sorry for the inconvenience, please call the customer care number.',
@@ -55,7 +56,7 @@ const Bot = () => {
       <FlatList
         data={messages}
         renderItem={({ item }) => (
-          <View style={item.sender === 'user' ? styles.userMessage : styles.botMessageContainer}>
+          <View style={item.sender === 'user' ? styles.userMessage : styles.botMessageContainer} >
             {item.sender === 'bot' && (
               <View style={styles.botIconContainer}>
                 <MaterialCommunityIcons name="robot-outline" size={24} color="#000" style={styles.botIcon} />
@@ -63,6 +64,7 @@ const Bot = () => {
             )}
             <View style={item.sender === 'user' ? styles.userMessage : styles.botMessage}>
               <Text style={styles.messageText}>{item.text}</Text>
+              
             </View>
           </View>
         )}
@@ -138,7 +140,6 @@ const styles = StyleSheet.create({
     paddingVertical:7,
     paddingHorizontal:20,
     fontFamily:'Poppins-Regular',
-
 
   },
   messageText: {

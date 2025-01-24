@@ -8,6 +8,9 @@ import Reviews from './src/components/Reviews';
 import SignUpScreen from './src/screens/SignUpScreen'; 
 import Login from './src/screens/Login';
 import Bot from './src/screens/Bot';
+import ProfileScreen from './src/screens/ProfileScreen';
+import Bookings from './src/screens/Bookings';
+import { Calendar,CalendarList } from 'react-native-calendars';
 
 function App(): React.JSX.Element {
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
@@ -22,7 +25,7 @@ function App(): React.JSX.Element {
   if (showWelcomeScreen) {
     return (
       <SafeAreaView style={styles.appContainer}>
-        <Bot/>
+        <Bookings/>
       </SafeAreaView>
     );
   }
