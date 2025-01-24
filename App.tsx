@@ -26,6 +26,7 @@ function App(): React.JSX.Element {
     return (
       <SafeAreaView style={styles.appContainer}>
         <Bookings/>
+        <Navbar/>
       </SafeAreaView>
     );
   }
