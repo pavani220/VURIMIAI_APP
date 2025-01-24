@@ -15,17 +15,17 @@ import { Calendar,CalendarList } from 'react-native-calendars';
 function App(): React.JSX.Element {
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
 
-  /*useEffect(() => {
+  useEffect(() => {
     const timer = setTimeout(() => {
       setShowWelcomeScreen(false);
     }, 6000); // Show welcome screen for 6 seconds
     return () => clearTimeout(timer);
-  }, []); */
+  }, []); 
 
   if (showWelcomeScreen) {
     return (
       <SafeAreaView style={styles.appContainer}>
-        <Bookings/>
+        <WelcomeScreen/>
         <Navbar/>
       </SafeAreaView>
     );
